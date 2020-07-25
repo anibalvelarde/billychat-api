@@ -10,6 +10,9 @@ using BillyChat.API.Domain.Services;
 using BillyChat.API.Persistence.Contexts;
 using BillyChat.API.Persistence.Repositories;
 using BillyChat.API.Services;
+using Swashbuckle;
+using Microsoft.OpenApi.Models;
+using System;
 
 namespace BillyChat.API
 {
@@ -24,6 +27,28 @@ namespace BillyChat.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "BillyChat.com API",
+                    Description = "A simple API for enabling advisor-based, monetizable chats",
+                    TermsOfService = new Uri("https://www.billychat.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Anibal Velarde",
+                        Email = string.Empty,
+                        Url = new Uri("https://github.com/anibalvelarde"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+            });
+
             services.AddMvc(options => {
                 options.EnableEndpointRouting = false;
             })
@@ -46,17 +71,21 @@ namespace BillyChat.API
                 // production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BillyChat.com API v1");
+                c.RoutePrefix = string.Empty;
+            });
             app.UseHttpsRedirection();
             app.UseMvc();
 
             // These were defaulted from dotnet new webapi template command
-            // app.UseRouting();
-            // app.UseAuthorization();
-            // app.UseEndpoints(endpoints =>
-            // {
-            //     endpoints.MapControllers();
-            // });
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
