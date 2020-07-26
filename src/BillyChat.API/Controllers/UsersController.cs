@@ -26,7 +26,7 @@ namespace BillyChat.API.Controllers
         [Route("/api/[controller]/{id}")]
         public async Task<ActionResult<User>> GetUserAsync(int id)
         {
-            var user = await _userService.GetUserById(id);
+            var user = await _userService.GetUserByIdAnsync(id);
             if (user == null) return NotFound();
             return user;
         }
@@ -36,26 +36,43 @@ namespace BillyChat.API.Controllers
         {
             try
             {
-                return await _userService.Create(name, phone, email); 
+                return await _userService.CreateAsync(name, phone, email); 
             }
             catch (BillyChat.API.Domain.Exceptions.DuplicateResourceException)
             {
                 return Conflict();
+            }
+            catch (System.ApplicationException)
+            {
+                return BadRequest();
             }
         }
 
         [HttpPut]
         public async Task<ActionResult<User>> UpdateUserAsync(int id, User userToUpdate)
         {
-            if (id != userToUpdate.Id) return BadRequest();
-            return await _userService.Update(userToUpdate);
+            try
+            {
+                if (id != userToUpdate.Id) return BadRequest();
+                var currentUser = await _userService.GetUserByIdAnsync(id);
+                if ( currentUser == null) return NotFound();
+                return await _userService.UpdateAsync(userToUpdate, currentUser);
+            }
+            catch (BillyChat.API.Domain.Exceptions.DuplicateResourceException)
+            {
+                return Conflict();
+            }
+            catch (System.ApplicationException)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult> DeleteUserAsync(int id)
         {
-            if(await _userService.GetUserById(id) == null) return NotFound();
-            await _userService.Delete(id);
+            if(await _userService.GetUserByIdAnsync(id) == null) return NotFound();
+            await _userService.DeleteAsync(id);
             return Ok();
         }
     }

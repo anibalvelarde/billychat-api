@@ -5,6 +5,7 @@ using BillyChat.API.Domain.Models;
 using BillyChat.API.Domain.Repositories;
 using BillyChat.API.Persistence.Contexts;
 using System;
+using System.Linq;
 
 namespace BillyChat.API.Persistence.Repositories
 {
@@ -12,7 +13,7 @@ namespace BillyChat.API.Persistence.Repositories
     {
         public UserRepository(AppDbContext context) : base(context) {}
 
-        async Task<User> IUserRepository.Create(string name, string phone, string email)
+        async Task<User> IUserRepository.CreateAsync(string name, string phone, string email)
         {
             var user = new User() {
                 Name = name,
@@ -27,9 +28,42 @@ namespace BillyChat.API.Persistence.Repositories
             return newUser.Entity;
         }
 
-        Task IUserRepository.Delete(int id)
+        async Task IUserRepository.DeleteAsync(User userToDelete)
         {
-            throw new NotImplementedException();
+            _context.Users.Remove(userToDelete);
+            await _context.SaveChangesAsync();
+        }
+
+        async Task<bool> IUserRepository.ExistsWithEmailAsync(string matchEmail)
+        {
+            var users = await _context.Users.ToListAsync();
+            return users
+                .Where(u => u.Email.Equals(matchEmail))
+                .FirstOrDefault() != null;
+        }
+
+        async Task<bool> IUserRepository.ExistsWithEmailAsync(User toMatchForEmail)
+        {
+            var users = await _context.Users.ToListAsync();
+            return users
+                .Where(u => u.Id != toMatchForEmail.Id && u.Email.Equals(toMatchForEmail.Email))
+                .FirstOrDefault() != null;
+        }
+
+        async Task<bool> IUserRepository.ExistsWtihPhoneAsync(string matchPhone)
+        {
+            var users = await _context.Users.ToListAsync();
+            return users
+                .Where(u => u.Phone.Equals(matchPhone))
+                .FirstOrDefault() != null;
+        }
+
+        async Task<bool> IUserRepository.ExistsWtihPhoneAsync(User toMatchForPhone)
+        {
+            var users = await _context.Users.ToListAsync();
+            return users
+                .Where(u => u.Id != toMatchForPhone.Id && u.Email.Equals(toMatchForPhone.Phone))
+                .FirstOrDefault() != null;
         }
 
         async Task<IEnumerable<User>> IUserRepository.ListAsync()
@@ -37,7 +71,7 @@ namespace BillyChat.API.Persistence.Repositories
             return await _context.Users.ToListAsync();
         }
 
-        async Task<User> IUserRepository.Update(User userToUpdate)
+        async Task<User> IUserRepository.UpdateAsync(User userToUpdate)
         {
             userToUpdate.LastAccessDate = DateTime.UtcNow;
             var updatedUser = _context.Users.Update(userToUpdate);

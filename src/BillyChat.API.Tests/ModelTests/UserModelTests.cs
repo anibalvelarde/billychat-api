@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BillyChat.API.Domain.Models;
 using System;
 
-namespace BillyChat.API.Tests
+namespace BillyChat.API.Tests.Models
 {
     [TestClass]
     public class UserModelTests

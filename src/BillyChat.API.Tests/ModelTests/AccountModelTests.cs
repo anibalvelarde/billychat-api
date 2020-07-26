@@ -3,7 +3,7 @@ using BillyChat.API.Domain.Models;
 using System;
 using BillyChat.API.Domain.Models.Enums;
 
-namespace BillyChat.API.Tests
+namespace BillyChat.API.Tests.Models
 {
     [TestClass]
     public class AccountModelTests
