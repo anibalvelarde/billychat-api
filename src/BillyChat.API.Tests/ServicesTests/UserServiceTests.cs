@@ -106,24 +106,22 @@ namespace BillyChat.API.Tests.Services
         [TestMethod]
         public async Task Should_Update_Existing_User_Correctly()
         {
-            // TODO: Complete this test...
-            Assert.Inconclusive();
-            // // arrange...
-            // User expUser = Mock.Of<User>();
-            // User currentUser = Mock.Of<User>(); 
-            // string expName = "some-name", expEmail = "some-email", expPhone = "some-phone";
-            // var mockRepo = new Mock<IUserRepository>(MockBehavior.Strict);
-            // mockRepo.Setup(_ => _.CreateAsync(expName, expPhone, expEmail)).ReturnsAsync(expUser);
-            // mockRepo.Setup(_ => _.ExistsWithEmailAsync(expEmail)).ReturnsAsync(false);
-            // mockRepo.Setup(_ => _.ExistsWtihPhoneAsync(It.IsAny<string>())).ReturnsAsync(false);
-            // IUserService svc = new UserService(mockRepo.Object);
+            // arrange...
+            string expName = "some-name", expEmail = "some-email", expPhone = "some-phone";
+            User expUser = Mock.Of<User>(eu => eu.Email == expEmail && eu.Phone == expPhone && eu.Name == expName);
+            User currentUser = Mock.Of<User>(cu => cu.Email == "current-email" && cu.Phone == "current-phone" && cu.Name == "current-name"); 
+            var mockRepo = new Mock<IUserRepository>(MockBehavior.Strict);
+            mockRepo.Setup(_ => _.ExistsWithEmailAsync(expUser)).ReturnsAsync(false);
+            mockRepo.Setup(_ => _.ExistsWtihPhoneAsync(expUser)).ReturnsAsync(false);
+            mockRepo.Setup(_ => _.UpdateAsync(expUser)).ReturnsAsync(expUser);
+            IUserService svc = new UserService(mockRepo.Object);
 
-            // // act...
-            // var result = await svc.UpdateAsync(expUser, currentUser);
+            // act...
+            var result = await svc.UpdateAsync(expUser, currentUser);
 
-            // // assert & verify...
-            // Assert.AreSame(expUser, result);
-            // mockRepo.VerifyAll();
+            // assert & verify...
+            Assert.AreSame(expUser, result);
+            mockRepo.VerifyAll();
         }
     }
 }
