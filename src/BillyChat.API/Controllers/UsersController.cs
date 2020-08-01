@@ -29,7 +29,7 @@ namespace BillyChat.API.Controllers
         [Route("/api/[controller]/{id}")]
         public async Task<ActionResult<User>> GetUserAsync(int id)
         {
-            var user = await _userService.GetUserByIdAnsync(id);
+            var user = await _userService.GetByIdAsync(id);
             if (user == null) return NotFound();
             return user;
         }
@@ -57,7 +57,7 @@ namespace BillyChat.API.Controllers
             try
             {
                 if (id != userToUpdate.Id) return BadRequest();
-                var currentUser = await _userService.GetUserByIdAnsync(id);
+                var currentUser = await _userService.GetByIdAsync(id);
                 if ( currentUser == null) return NotFound();
                 return await _userService.UpdateAsync(userToUpdate, currentUser);
             }
@@ -74,7 +74,7 @@ namespace BillyChat.API.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteUserAsync(int id)
         {
-            if(await _userService.GetUserByIdAnsync(id) == null) return NotFound();
+            if(await _userService.GetByIdAsync(id) == null) return NotFound();
             await _userService.DeleteAsync(id);
             return Ok();
         }

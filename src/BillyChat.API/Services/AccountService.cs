@@ -26,7 +26,7 @@ namespace BillyChat.API.Services
             return newAccount;
         }
 
-        async Task<Account> IAccountService.GetByIdAnsync(int id)
+        async Task<Account> IAccountService.GetByIdAsync(int id)
         {
             var accounts = await _accountRepository.ListAsync();
             return accounts
@@ -43,7 +43,7 @@ namespace BillyChat.API.Services
         async Task IAccountService.DeleteAsync(int id)
         {
             IAccountService svc = this;
-            var acctToDelete = await svc.GetByIdAnsync(id);
+            var acctToDelete = await svc.GetByIdAsync(id);
             if (acctToDelete == null) throw new InvalidOperationException();
             await _accountRepository.DeleteAsync(acctToDelete);
         }
