@@ -21,7 +21,7 @@ namespace BillyChat.API.Tests.Models
             Assert.IsInstanceOfType(account.CreatedOn, typeof(DateTime));
             Assert.IsInstanceOfType(account.LastUpdatedOn, typeof(DateTime));
             Assert.IsNull(account.AccountNumber);
-            Assert.IsNull(account.UserInfo);
+            Assert.IsNull(account.User);
             Assert.AreEqual(AccountType.NotSet, account.Type);
             Assert.IsFalse(account.IsValid());
         }
@@ -57,7 +57,7 @@ namespace BillyChat.API.Tests.Models
                 .WithUser(aUser);
 
             // assert
-            Assert.AreSame(aUser, accountWithUser.UserInfo);
+            Assert.AreSame(aUser, accountWithUser.User);
         }
 
                 [TestMethod]
