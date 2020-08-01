@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BillyChat.API.Controllers
 {
+    /// <summary>
+    /// This governs operations for magagement of www.billychat.com users model.
+    /// </summary>
     [ApiController]
     [Route("/api/[controller]")]
     public class UsersController : Controller
