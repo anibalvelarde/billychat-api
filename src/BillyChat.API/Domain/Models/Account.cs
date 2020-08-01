@@ -38,5 +38,11 @@ namespace BillyChat.API.Domain.Models
         public string AccountNumber { get; private set; }
         public AccountType Type { get; private set; }
         public DateTime LastUpdatedOn { get; private set; }
+        public bool IsValid()
+        {
+            return
+                this.Type != AccountType.NotSet &&
+                this.UserInfo != null;
+        }
     }
 }

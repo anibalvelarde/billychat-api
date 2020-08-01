@@ -23,10 +23,29 @@ namespace BillyChat.API.Tests.Models
             Assert.IsNull(account.AccountNumber);
             Assert.IsNull(account.UserInfo);
             Assert.AreEqual(AccountType.NotSet, account.Type);
+            Assert.IsFalse(account.IsValid());
+        }
+
+        [DataRow(AccountType.Admin)]
+        [DataRow(AccountType.Client)]
+        [DataRow(AccountType.Advisor)]
+        [TestMethod]
+        public void Should_Have_Created_WithUser_And_Correct_AccountType(AccountType expAcctType)
+        {
+            // arrange
+            var aUser = Mock.Of<User>();
+
+            // act
+            var accountWithUser = Account
+                .CreateAccount(expAcctType)
+                .WithUser(aUser);
+
+            // assert
+            Assert.AreEqual(expAcctType, accountWithUser.Type);
         }
 
         [TestMethod]
-        public void Should_Have_Created_WithUser_When_Invoked()
+        public void Should_Have_Created_WithUser_And_Intended_User()
         {
             // arrange
             var aUser = Mock.Of<User>();
@@ -39,7 +58,22 @@ namespace BillyChat.API.Tests.Models
 
             // assert
             Assert.AreSame(aUser, accountWithUser.UserInfo);
-            Assert.AreEqual(expAcctType, accountWithUser.Type);
+        }
+
+                [TestMethod]
+        public void Should_Have_Created_WithUser_Then_IsValid()
+        {
+            // arrange
+            var aUser = Mock.Of<User>();
+            var expAcctType = AccountType.Client;
+
+            // act
+            var accountWithUser = Account
+                .CreateAccount(expAcctType)
+                .WithUser(aUser);
+
+            // assert
+            Assert.IsTrue(accountWithUser.IsValid());
         }
     }
 }
