@@ -12,6 +12,6 @@ namespace BillyChat.API.Domain.Models
         public string Phone { get; set; }
         public string Email { get; set; }
         public DateTime LastAccessDate { get; set; }
-        public ICollection<Account> Accounts {get; set;}
+        public List<Account> Accounts {get; set;}
     }
 }
