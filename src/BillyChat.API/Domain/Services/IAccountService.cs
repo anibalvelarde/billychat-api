@@ -9,7 +9,7 @@ namespace BillyChat.API.Domain.Services
     {
         Task<IEnumerable<Account>> ListAsync();
         Task<Account> CreateAsync(User user, AccountType ofType);
-        Task<Account> GetByIdAnsync(int id);
+        Task<Account> GetByIdAsync(int id);
         Task DeleteAsync(int id);
     }
 }
