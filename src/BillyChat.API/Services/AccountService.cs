@@ -19,10 +19,7 @@ namespace BillyChat.API.Services
         async Task<Account> IAccountService.CreateAsync(User user, AccountType ofType)
         {
             if (user is null) throw new ApplicationException();
-            var newProspect = Account
-                .CreateAccount(ofType)
-                .WithUser(user);
-            var newAccount = await _accountRepository.CreateAsync(newProspect);
+            var newAccount = await _accountRepository.CreateAsync(user, ofType);
             return newAccount;
         }
 
