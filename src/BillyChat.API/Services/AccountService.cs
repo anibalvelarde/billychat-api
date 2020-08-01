@@ -30,7 +30,7 @@ namespace BillyChat.API.Services
         {
             var accounts = await _accountRepository.ListAsync();
             return accounts
-                .Where(acc => acc.UserId.Equals(id))
+                .Where(acc => acc.Id.Equals(id))
                 .FirstOrDefault();
         }
 
