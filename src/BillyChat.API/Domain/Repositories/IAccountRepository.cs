@@ -1,18 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BillyChat.API.Domain.Models;
 
 namespace BillyChat.API.Domain.Repositories
 {
-    public interface IUserRepository
+    public interface IAccountRepository
     {
-        Task<IEnumerable<User>> ListAsync();
-        Task<User> CreateAsync(string name, string phone, string email);
-        Task<User> UpdateAsync(User userToUpdate);
-        Task DeleteAsync(User userToDelete);
-        Task<bool> ExistsWithEmailAsync(string matchEmail);
-        Task<bool> ExistsWtihPhoneAsync(string matchPhone);
-        Task<bool> ExistsWithEmailAsync(User toMatchEmail);
-        Task<bool> ExistsWtihPhoneAsync(User toMatchPhone);
+        Task<IEnumerable<Account>> ListAsync();
+        Task<Account> CreateAsync(Account prospect);
+        Task DeleteAsync(Account accountToDelete);
+        Task<bool> ExistsWithUserAsync(User user);
+        Task<bool> ExistsWithUserIdAsync(int userId);
+        Task<bool> ExistsWtihAccountNumberAsync(Guid id);
     }
 }
