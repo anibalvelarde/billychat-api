@@ -21,7 +21,7 @@ namespace BillyChat.API.Domain.Models
         {
             var updated = Account.CreateAccount(this.Type);
             updated.Id = user.Id;
-            updated.UserInfo = user;
+            updated.User = user;
             updated.LastUpdatedOn = DateTime.UtcNow;
             return updated;
         }
@@ -32,17 +32,17 @@ namespace BillyChat.API.Domain.Models
             this.CreatedOn = DateTime.UtcNow;
         }
 
-        public int Id { get; private set; }
-        public DateTime CreatedOn { get; private set; }
-        public User UserInfo { get; private set; }
-        public string AccountNumber { get; private set; }
-        public AccountType Type { get; private set; }
-        public DateTime LastUpdatedOn { get; private set; }
+        public int Id { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public User User { get; set; }
+        public string AccountNumber { get; set; }
+        public AccountType Type { get; set; }
+        public DateTime LastUpdatedOn { get; set; }
         public bool IsValid()
         {
             return
                 this.Type != AccountType.NotSet &&
-                this.UserInfo != null;
+                this.User != null;
         }
     }
 }
