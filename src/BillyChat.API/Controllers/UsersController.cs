@@ -75,5 +75,12 @@ namespace BillyChat.API.Controllers
             await _userService.DeleteAsync(id);
             return Ok();
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/{id}/accounts")]
+        public async Task<ActionResult<List<Account>>> GetUserAccounts()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

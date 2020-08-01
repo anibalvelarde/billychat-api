@@ -8,6 +8,8 @@ namespace BillyChat.API.Domain.Models.Enums
         [Description("Client")]
         Client = 1,
         [Description("Advisor")]
-        Doctor = 2    
+        Doctor = 2,
+        [Description("NotSet")]
+        NotSet = 3    
     }
 }
