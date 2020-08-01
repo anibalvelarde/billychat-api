@@ -81,9 +81,12 @@ namespace BillyChat.API.Controllers
 
         [HttpGet]
         [Route("/api/[controller]/{id}/accounts")]
-        public async Task<ActionResult<List<Account>>> GetUserAccounts()
+        public async Task<ActionResult<IEnumerable<Account>>> GetUserAccounts(int id)
         {
-            throw new NotImplementedException();
+            var user = await _userService.GetByIdAsync(id);
+            if (user == null) return NotFound();
+
+            return user.Accounts;
         }
     }
 }
