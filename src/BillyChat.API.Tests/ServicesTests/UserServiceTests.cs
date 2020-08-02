@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BillyChat.API.Domain.Exceptions;
 using BillyChat.API.Domain.Models;
@@ -121,6 +122,25 @@ namespace BillyChat.API.Tests.Services
 
             // assert & verify...
             Assert.AreSame(expUser, result);
+            mockRepo.VerifyAll();
+        }
+
+        [TestMethod]
+        public async Task Should_Delete_Existing_User_Correctly()
+        {
+            // arrange...
+            int expId = 1606;
+            User expUser = Mock.Of<User>(u => u.Id == expId);
+            User currentUser = Mock.Of<User>(cu => cu.Email == "current-email" && cu.Phone == "current-phone" && cu.Name == "current-name"); 
+            var mockRepo = new Mock<IUserRepository>(MockBehavior.Strict);
+            mockRepo.Setup(_ => _.ListAsync()).ReturnsAsync(new List<User>() { expUser });
+            mockRepo.Setup(_ => _.DeleteAsync(expUser)).Returns(Task.CompletedTask);
+            IUserService svc = new UserService(mockRepo.Object);
+
+            // act...
+            await svc.DeleteAsync(expId);
+
+            // assert & verify...
             mockRepo.VerifyAll();
         }
     }

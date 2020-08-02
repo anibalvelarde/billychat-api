@@ -13,6 +13,8 @@ using BillyChat.API.Services;
 using Swashbuckle;
 using Microsoft.OpenApi.Models;
 using System;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Schema;
 
 namespace BillyChat.API
 {
@@ -48,16 +50,23 @@ namespace BillyChat.API
                     }
                 });
             });
+            services.AddSwaggerGenNewtonsoftSupport();
 
             services.AddMvc(options => {
                 options.EnableEndpointRouting = false;
             })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddDbContext<AppDbContext>(options => {
                 options.UseInMemoryDatabase("billychat-api-in-memory");
             });
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllers().AddNewtonsoftJson(options => 
+                options.SerializerSettings.Converters.Add(new StringEnumConverter()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -68,7 +68,9 @@ namespace BillyChat.API.Persistence.Repositories
 
         async Task<IEnumerable<User>> IUserRepository.ListAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Include(u => u.Accounts)
+                .ToListAsync();
         }
 
         async Task<User> IUserRepository.UpdateAsync(User userToUpdate)
