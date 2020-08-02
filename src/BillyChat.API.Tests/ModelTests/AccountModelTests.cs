@@ -60,7 +60,7 @@ namespace BillyChat.API.Tests.Models
             Assert.AreSame(aUser, accountWithUser.User);
         }
 
-                [TestMethod]
+        [TestMethod]
         public void Should_Have_Created_WithUser_Then_IsValid()
         {
             // arrange
@@ -74,6 +74,36 @@ namespace BillyChat.API.Tests.Models
 
             // assert
             Assert.IsTrue(accountWithUser.IsValid());
+        }
+
+        [TestMethod]
+        public void Should_Validate_Correctly_When_AccountType_Is_NotSet()
+        {
+            // arrange
+            var aUser = Mock.Of<User>();
+
+            // act
+            var accountWithUser = Account
+                .CreateAccount(AccountType.NotSet)
+                .WithUser(aUser);
+
+            // assert
+            Assert.IsFalse(accountWithUser.IsValid());
+        }
+
+        [TestMethod]
+        public void Should_Validate_Correctly_When_User_Is_Null()
+        {
+            // arrange
+            User aUser = null;
+
+            // act
+            var accountWithUser = Account
+                .CreateAccount(AccountType.NotSet)
+                .WithUser(aUser);
+
+            // assert
+            Assert.IsFalse(accountWithUser.IsValid());
         }
     }
 }
