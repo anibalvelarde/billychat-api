@@ -1,4 +1,4 @@
-name: .NET Core
+name: Billy Chat - Build & Test
 
 on:
   push:
