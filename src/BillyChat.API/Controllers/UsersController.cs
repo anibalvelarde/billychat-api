@@ -56,46 +56,6 @@ namespace BillyChat.API.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("api/[controller]/client")]
-        public async Task<ActionResult<User>> CreateClientUserAsync(string name, string phone, string email)
-        {
-            try
-            {
-                var newUser =  await _userService.CreateAsync(name, phone, email); 
-                await _accountService.CreateAsync(newUser, AccountType.Client);
-                return await _userService.GetByIdAsync(newUser.Id);
-            }
-            catch (BillyChat.API.Domain.Exceptions.DuplicateResourceException)
-            {
-                return Conflict();
-            }
-            catch (System.ApplicationException)
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpPost]
-        [Route("api/[controller]/advisor")]
-        public async Task<ActionResult<User>> CreateAdvisorUserAsync(string name, string phone, string email)
-        {
-            try
-            {
-                var newUser = await _userService.CreateAsync(name, phone, email);
-                await _accountService.CreateAsync(newUser, AccountType.Advisor);
-                return await _userService.GetByIdAsync(newUser.Id);
-            }
-            catch (BillyChat.API.Domain.Exceptions.DuplicateResourceException)
-            {
-                return Conflict();
-            }
-            catch (System.ApplicationException)
-            {
-                return BadRequest();
-            }
-        }
-
         [HttpPut]
         public async Task<ActionResult<User>> UpdateUserAsync(int id, User userToUpdate)
         {
