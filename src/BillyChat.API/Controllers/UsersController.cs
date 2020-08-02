@@ -101,6 +101,7 @@ namespace BillyChat.API.Controllers
             try
             {
                 var user = await _userService.GetByIdAsync(id);
+                if (user.HasAccountType(ofType)) return user;
                 await _accountService.CreateAsync(user, ofType);
                 return await _userService.GetByIdAsync(id);
             }

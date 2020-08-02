@@ -37,10 +37,13 @@ namespace BillyChat.API.Controllers
             try
             {
                 var aUser = await _userService.GetByIdAsync(userId);
-                await _accountsServcie.CreateAsync(
-                    aUser,
-                    ofType
-                );
+                if (!aUser.HasAccountType(ofType))
+                {
+                    await _accountsServcie.CreateAsync(
+                        aUser,
+                        ofType
+                    );
+                }
                 return Ok();
             }
             catch (ApplicationException)
