@@ -23,7 +23,7 @@ namespace BillyChat.API.Services
             return newUser;
         }
 
-        async Task<User> IUserService.GetUserByIdAnsync(int id)
+        async Task<User> IUserService.GetByIdAsync(int id)
         {
             var users = await _userRepository.ListAsync();
             return users
@@ -80,7 +80,7 @@ namespace BillyChat.API.Services
         async Task IUserService.DeleteAsync(int id)
         {
             IUserService svc = this;
-            var userToDelete = await svc.GetUserByIdAnsync(id);
+            var userToDelete = await svc.GetByIdAsync(id);
             if (userToDelete == null) throw new InvalidOperationException();
             await _userRepository.DeleteAsync(userToDelete);
         }

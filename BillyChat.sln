@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillyChat.API", "BillyChat.API\BillyChat.API.csproj", "{122FCC62-F1E6-4C40-A232-41E6C520236E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillyChat.API", "src\BillyChat.API\BillyChat.API.csproj", "{122FCC62-F1E6-4C40-A232-41E6C520236E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillyChat.API.Tests", "BillyChat.API.Tests\BillyChat.API.Tests.csproj", "{F12D9512-AE03-487B-8027-FE0726235F97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillyChat.API.Tests", "src\BillyChat.API.Tests\BillyChat.API.Tests.csproj", "{F12D9512-AE03-487B-8027-FE0726235F97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

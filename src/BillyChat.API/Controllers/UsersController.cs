@@ -1,4 +1,5 @@
 using BillyChat.API.Domain.Models;
+using BillyChat.API.Domain.Models.Enums;
 using BillyChat.API.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,13 +8,20 @@ using System.Threading.Tasks;
 
 namespace BillyChat.API.Controllers
 {
+    /// <summary>
+    /// This governs operations for magagement of www.billychat.com users model.
+    /// </summary>
     [ApiController]
     [Route("/api/[controller]")]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
-
-        public UsersController(IUserService userService) => _userService = userService;
+        private readonly IAccountService _accountService;
+        public UsersController(IUserService userSvc, IAccountService acctSvc) 
+        {
+            _userService = userSvc;
+            _accountService = acctSvc;
+        }
 
         [HttpGet]
         public async Task<IEnumerable<User>> GetAllUsersAsync()
@@ -26,7 +34,7 @@ namespace BillyChat.API.Controllers
         [Route("/api/[controller]/{id}")]
         public async Task<ActionResult<User>> GetUserAsync(int id)
         {
-            var user = await _userService.GetUserByIdAnsync(id);
+            var user = await _userService.GetByIdAsync(id);
             if (user == null) return NotFound();
             return user;
         }
@@ -54,7 +62,7 @@ namespace BillyChat.API.Controllers
             try
             {
                 if (id != userToUpdate.Id) return BadRequest();
-                var currentUser = await _userService.GetUserByIdAnsync(id);
+                var currentUser = await _userService.GetByIdAsync(id);
                 if ( currentUser == null) return NotFound();
                 return await _userService.UpdateAsync(userToUpdate, currentUser);
             }
@@ -71,9 +79,26 @@ namespace BillyChat.API.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteUserAsync(int id)
         {
-            if(await _userService.GetUserByIdAnsync(id) == null) return NotFound();
+            if(await _userService.GetByIdAsync(id) == null) return NotFound();
             await _userService.DeleteAsync(id);
             return Ok();
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/{id}/accounts")]
+        public async Task<ActionResult<User>> AddUserAccount(int id, AccountType ofType)
+        {
+            try
+            {
+                var user = await _userService.GetByIdAsync(id);
+                if (user.HasAccountType(ofType)) return user;
+                await _accountService.CreateAsync(user, ofType);
+                return await _userService.GetByIdAsync(id);
+            }
+            catch (ApplicationException)
+            {
+                return NotFound();
+            }
         }
     }
 }

@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using BillyChat.API.Domain.Models.Enums;
 
 namespace BillyChat.API.Domain.Models
 {
@@ -11,5 +14,11 @@ namespace BillyChat.API.Domain.Models
         public string Phone { get; set; }
         public string Email { get; set; }
         public DateTime LastAccessDate { get; set; }
+        public List<Account> Accounts {get; set;}
+
+        internal bool HasAccountType(AccountType ofType)
+        {
+            return this.Accounts.Any(a => a.Type.Equals(ofType));
+        }
     }
 }
