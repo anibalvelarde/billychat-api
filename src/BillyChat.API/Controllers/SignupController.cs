@@ -25,7 +25,7 @@ namespace BillyChat.API.Controllers
         }
 
         [HttpPost]
-        [Route("api/[controller]/client")]
+        [Route("/api/[controller]/client")]
         public async Task<ActionResult<User>> CreateClientUserAsync(string name, string phone, string email)
         {
             try
@@ -45,7 +45,7 @@ namespace BillyChat.API.Controllers
         }
 
         [HttpPost]
-        [Route("api/[controller]/advisor")]
+        [Route("/api/[controller]/advisor")]
         public async Task<ActionResult<User>> CreateAdvisorUserAsync(string name, string phone, string email)
         {
             try
