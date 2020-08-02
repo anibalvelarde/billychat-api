@@ -20,7 +20,6 @@ namespace BillyChat.API.Domain.Models
         internal Account WithUser(User user)
         {
             var updated = Account.CreateAccount(this.Type);
-            updated.Id = user.Id;
             updated.User = user;
             updated.LastUpdatedOn = DateTime.UtcNow;
             return updated;

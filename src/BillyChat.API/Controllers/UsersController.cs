@@ -1,4 +1,5 @@
 using BillyChat.API.Domain.Models;
+using BillyChat.API.Domain.Models.Enums;
 using BillyChat.API.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,8 +16,12 @@ namespace BillyChat.API.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
-
-        public UsersController(IUserService userService) => _userService = userService;
+        private readonly IAccountService _accountService;
+        public UsersController(IUserService userSvc, IAccountService acctSvc) 
+        {
+            _userService = userSvc;
+            _accountService = acctSvc;
+        }
 
         [HttpGet]
         public async Task<IEnumerable<User>> GetAllUsersAsync()
@@ -87,6 +92,22 @@ namespace BillyChat.API.Controllers
             if (user == null) return NotFound();
 
             return user.Accounts;
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/{id}/accounts")]
+        public async Task<ActionResult<User>> AddUserAccount(int id, AccountType ofType)
+        {
+            try
+            {
+                var user = await _userService.GetByIdAsync(id);
+                await _accountService.CreateAsync(user, ofType);
+                return await _userService.GetByIdAsync(id);
+            }
+            catch (ApplicationException)
+            {
+                return NotFound();
+            }
         }
     }
 }
